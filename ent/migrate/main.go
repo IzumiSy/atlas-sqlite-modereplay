@@ -37,7 +37,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-    if err = migrate.NamedDiff(ctx, "sqlite3://main.db?_fk=1", os.Args[1], opts...); err != nil {
+    if err := migrate.NamedDiff(ctx, "sqlite3://main.db?_fk=1", os.Args[1], opts...); err != nil {
 		log.Fatalf("failed generating migration file: %v", err)
 	}
 }
