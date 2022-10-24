@@ -32,6 +32,7 @@ type UserMutation struct {
 	typ           string
 	id            *int
 	name          *string
+	job           *string
 	age           *int
 	addage        *int
 	clearedFields map[string]struct{}
@@ -174,6 +175,42 @@ func (m *UserMutation) ResetName() {
 	m.name = nil
 }
 
+// SetJob sets the "job" field.
+func (m *UserMutation) SetJob(s string) {
+	m.job = &s
+}
+
+// Job returns the value of the "job" field in the mutation.
+func (m *UserMutation) Job() (r string, exists bool) {
+	v := m.job
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJob returns the old "job" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldJob(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJob is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJob requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJob: %w", err)
+	}
+	return oldValue.Job, nil
+}
+
+// ResetJob resets all changes to the "job" field.
+func (m *UserMutation) ResetJob() {
+	m.job = nil
+}
+
 // SetAge sets the "age" field.
 func (m *UserMutation) SetAge(i int) {
 	m.age = &i
@@ -249,9 +286,12 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 3)
 	if m.name != nil {
 		fields = append(fields, user.FieldName)
+	}
+	if m.job != nil {
+		fields = append(fields, user.FieldJob)
 	}
 	if m.age != nil {
 		fields = append(fields, user.FieldAge)
@@ -266,6 +306,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case user.FieldName:
 		return m.Name()
+	case user.FieldJob:
+		return m.Job()
 	case user.FieldAge:
 		return m.Age()
 	}
@@ -279,6 +321,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case user.FieldName:
 		return m.OldName(ctx)
+	case user.FieldJob:
+		return m.OldJob(ctx)
 	case user.FieldAge:
 		return m.OldAge(ctx)
 	}
@@ -296,6 +340,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
+		return nil
+	case user.FieldJob:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJob(v)
 		return nil
 	case user.FieldAge:
 		v, ok := value.(int)
@@ -370,6 +421,9 @@ func (m *UserMutation) ResetField(name string) error {
 	switch name {
 	case user.FieldName:
 		m.ResetName()
+		return nil
+	case user.FieldJob:
+		m.ResetJob()
 		return nil
 	case user.FieldAge:
 		m.ResetAge()

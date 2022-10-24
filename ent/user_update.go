@@ -33,6 +33,12 @@ func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	return uu
 }
 
+// SetJob sets the "job" field.
+func (uu *UserUpdate) SetJob(s string) *UserUpdate {
+	uu.mutation.SetJob(s)
+	return uu
+}
+
 // SetAge sets the "age" field.
 func (uu *UserUpdate) SetAge(i int) *UserUpdate {
 	uu.mutation.ResetAge()
@@ -118,6 +124,11 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
+	if v, ok := uu.mutation.Job(); ok {
+		if err := user.JobValidator(v); err != nil {
+			return &ValidationError{Name: "job", err: fmt.Errorf(`ent: validator failed for field "User.job": %w`, err)}
+		}
+	}
 	if v, ok := uu.mutation.Age(); ok {
 		if err := user.AgeValidator(v); err != nil {
 			return &ValidationError{Name: "age", err: fmt.Errorf(`ent: validator failed for field "User.age": %w`, err)}
@@ -149,6 +160,13 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uu.mutation.Job(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldJob,
 		})
 	}
 	if value, ok := uu.mutation.Age(); ok {
@@ -187,6 +205,12 @@ type UserUpdateOne struct {
 // SetName sets the "name" field.
 func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
 	uuo.mutation.SetName(s)
+	return uuo
+}
+
+// SetJob sets the "job" field.
+func (uuo *UserUpdateOne) SetJob(s string) *UserUpdateOne {
+	uuo.mutation.SetJob(s)
 	return uuo
 }
 
@@ -288,6 +312,11 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
+	if v, ok := uuo.mutation.Job(); ok {
+		if err := user.JobValidator(v); err != nil {
+			return &ValidationError{Name: "job", err: fmt.Errorf(`ent: validator failed for field "User.job": %w`, err)}
+		}
+	}
 	if v, ok := uuo.mutation.Age(); ok {
 		if err := user.AgeValidator(v); err != nil {
 			return &ValidationError{Name: "age", err: fmt.Errorf(`ent: validator failed for field "User.age": %w`, err)}
@@ -336,6 +365,13 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uuo.mutation.Job(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldJob,
 		})
 	}
 	if value, ok := uuo.mutation.Age(); ok {

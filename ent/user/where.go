@@ -86,6 +86,13 @@ func Name(v string) predicate.User {
 	})
 }
 
+// Job applies equality check predicate on the "job" field. It's identical to JobEQ.
+func Job(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldJob), v))
+	})
+}
+
 // Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
 func Age(v int) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -189,6 +196,105 @@ func NameEqualFold(v string) predicate.User {
 func NameContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
+	})
+}
+
+// JobEQ applies the EQ predicate on the "job" field.
+func JobEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldJob), v))
+	})
+}
+
+// JobNEQ applies the NEQ predicate on the "job" field.
+func JobNEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldJob), v))
+	})
+}
+
+// JobIn applies the In predicate on the "job" field.
+func JobIn(vs ...string) predicate.User {
+	v := make([]any, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldJob), v...))
+	})
+}
+
+// JobNotIn applies the NotIn predicate on the "job" field.
+func JobNotIn(vs ...string) predicate.User {
+	v := make([]any, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldJob), v...))
+	})
+}
+
+// JobGT applies the GT predicate on the "job" field.
+func JobGT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldJob), v))
+	})
+}
+
+// JobGTE applies the GTE predicate on the "job" field.
+func JobGTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldJob), v))
+	})
+}
+
+// JobLT applies the LT predicate on the "job" field.
+func JobLT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldJob), v))
+	})
+}
+
+// JobLTE applies the LTE predicate on the "job" field.
+func JobLTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldJob), v))
+	})
+}
+
+// JobContains applies the Contains predicate on the "job" field.
+func JobContains(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldJob), v))
+	})
+}
+
+// JobHasPrefix applies the HasPrefix predicate on the "job" field.
+func JobHasPrefix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldJob), v))
+	})
+}
+
+// JobHasSuffix applies the HasSuffix predicate on the "job" field.
+func JobHasSuffix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldJob), v))
+	})
+}
+
+// JobEqualFold applies the EqualFold predicate on the "job" field.
+func JobEqualFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldJob), v))
+	})
+}
+
+// JobContainsFold applies the ContainsFold predicate on the "job" field.
+func JobContainsFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldJob), v))
 	})
 }
 

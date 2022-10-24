@@ -9,6 +9,8 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldJob holds the string denoting the job field in the database.
+	FieldJob = "job"
 	// FieldAge holds the string denoting the age field in the database.
 	FieldAge = "age"
 	// Table holds the table name of the user in the database.
@@ -19,6 +21,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldName,
+	FieldJob,
 	FieldAge,
 }
 
@@ -35,6 +38,8 @@ func ValidColumn(column string) bool {
 var (
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
+	// JobValidator is a validator for the "job" field. It is called by the builders before save.
+	JobValidator func(string) error
 	// AgeValidator is a validator for the "age" field. It is called by the builders before save.
 	AgeValidator func(int) error
 )
